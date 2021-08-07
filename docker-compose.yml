@@ -1,0 +1,36 @@
+version: '3.8'
+
+services: 
+  mysqldb:
+    image: mysql
+    restart: always
+    hostname: 'local-mysql-db'
+    env_file: ./.env
+    ports:
+      - $MYSQL_LOCAL_PORT:$MYSQL_DOCKER_PORT
+    container_name: anaik-local-mysql
+    volumes: 
+      - db-config:/etc/mysql
+      - db-data:/var/lib/mysql
+      - ./db/backup/files/:/data_backup/data
+  app:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    image: node-docker-demo
+    hostname: 'local-node'
+    env_file: ./.env
+    ports:
+      - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+    environment:
+        - DATABASE_HOST=mysqldb
+        - DATABASE_USERNAME=$DATABASE_USERNAME
+        - DATABASE_PASSWORD=$DATABASE_PASSWORD
+    depends_on:
+      - mysqldb
+    stdin_open: true
+    tty: true
+
+volumes: 
+  db-config:
+  db-data:
