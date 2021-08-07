@@ -1,5 +1,5 @@
-# todo-app
-Simple TODO list app using Node.js, Express and MySQL
+# Nodejs-and-Mysql-docker-example
+Simple app using Node.js, Express and MySQL
 
 # To view list of running containers
 docker ps
